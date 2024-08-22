@@ -11,8 +11,11 @@ const App = () => {
     'https://wallpapercave.com/wp/wp7945992.jpg'
   ];
   return (
-    <div className='app h-screen w-full grid place-items-center  bg-blue-400'>
-      <Carousel images={images} />
+    <div className='app h-screen w-full grid place-items-center  bg-gray-900'>
+      <div className='text-center'>
+        <h1 className='text-3xl text-white mb-6'>Beautiful Image Carousel</h1>
+        <Carousel images={images} />
+      </div>
     </div>
   )
 }
