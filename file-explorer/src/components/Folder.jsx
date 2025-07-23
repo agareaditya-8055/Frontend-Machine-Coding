@@ -40,14 +40,20 @@ const Folder = ({ handleInsertNode, handleDeleteNode, handleUpdateNode, explorer
         handleDeleteNode(explorerData?.id);
     };
 
+    const handleRename = (e) => {
+        e.stopPropagation();
+        setRenaming(true);
+    };
+
+
     if (explorerData?.isFolder) {
         return (
             <div className='mt-2'>
-                <div className='folder bg-gray-800 w-80 py-1 rounded-md px-3 justify-between flex items-center gap-2 cursor-pointer' onClick={() => setExpand(!expand)}>
+                <div className='folder bg-gray-800 w-96 py-2 rounded-md px-3 justify-between flex items-center gap-2 cursor-pointer hover:border hover:border-gray-50' onClick={() => setExpand(!expand)}>
                     <div className='flex items-center gap-2'>
                         <span><FaFolder size={"20px"} /></span>
                         {renaming ? (
-                            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={onRename} onBlur={() => setRenaming(false)} className='rounded-md text-black px-2 py-1' autoFocus />
+                            <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={onRename} onBlur={() => setRenaming(false)} className='rounded-md text-black px-2 ' autoFocus />
                         ) : (
                             <span>{explorerData?.name}</span>
                         )}
@@ -56,7 +62,7 @@ const Folder = ({ handleInsertNode, handleDeleteNode, handleUpdateNode, explorer
                     <div className='flex gap-2'>
                         <span onClick={(e) => handleNewFolder(e, true)}><AiFillFolderAdd className='text-gray-400 hover:text-gray-50' size={'23px'} /></span>
                         <span onClick={(e) => handleNewFolder(e, false)}><RiFileAddFill className='text-gray-400 hover:text-gray-50' size={'20px'} /></span>
-                        <span onClick={(e) => { e.stopPropagation(); setRenaming(true); }}><FaEdit className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
+                        <span onClick={handleRename}><FaEdit className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
                         <span onClick={handleDelete}><FaTrashAlt className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
                     </div>
                 </div>
@@ -68,11 +74,11 @@ const Folder = ({ handleInsertNode, handleDeleteNode, handleUpdateNode, explorer
                             <span>
                                 {showInput.isFolder ? <FaFolder /> : <FaFile />}
                             </span>
-                            <input type="text" onKeyDown={onAddFolder} onBlur={() => setShowInput({ ...showInput, visible: false })} className='inputContainer__input rounded-md text-black px-2 py-1' autoFocus />
+                            <input type="text" onKeyDown={onAddFolder} onBlur={() => setShowInput({ ...showInput, visible: false })} className='inputContainer__input rounded-md text-black px-2' autoFocus />
                         </div>
                     )}
 
-                    {explorerData?.items?.map((item, index) => (
+                    {explorerData?.items?.map((item) => (
                         <Folder key={item?.id} handleInsertNode={handleInsertNode} handleDeleteNode={handleDeleteNode} handleUpdateNode={handleUpdateNode} explorerData={item} />
                     ))}
                 </div>
@@ -80,15 +86,19 @@ const Folder = ({ handleInsertNode, handleDeleteNode, handleUpdateNode, explorer
         );
     } else {
         return (
-            <div className='file flex items-center gap-2 mt-2'>
+            <div className='file bg-gray-800 w-96 py-2 rounded-md px-3 justify-between flex items-center gap-2 cursor-pointer mt-2 hover:border hover:border-gray-50'>
+                <div className='flex items-center gap-2'>
                 <span><FaFile size={"20px"} /></span>
                 {renaming ? (
-                    <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={onRename} onBlur={() => setRenaming(false)} className='rounded-md text-black px-2 py-1' autoFocus />
+                    <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={onRename} onBlur={() => setRenaming(false)} className='rounded-md text-black px-2' autoFocus />
                 ) : (
                     <span>{explorerData?.name}</span>
                 )}
-                <span onClick={(e) => { e.stopPropagation(); setRenaming(true); }}><FaEdit className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
+                </div>
+                <div className='flex gap-2'>
+                <span onClick={handleRename}><FaEdit className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
                 <span onClick={handleDelete}><FaTrashAlt className='text-gray-400 hover:text-gray-50' size={'18px'} /></span>
+                </div>
             </div>
         );
     }
