@@ -10,37 +10,32 @@ const GridLayout = () => {
   const [storedIds, setStoredIds] = useState<number[]>([])
 
   const handleReverse = () => {
-    if(boxes.length === storedIds.length){
-     let intervalId =  setInterval(()=>{
-      setStoredIds(prevIds => {
-        const newIds = [...prevIds];
-        const id = newIds.pop();
-        
-        console.log('deleted id : ', id);
+    if (boxes.length === storedIds.length) {
+      let intervalId = setInterval(() => {
+        setStoredIds(prevIds => {
+          const newIds = [...prevIds];
+          newIds.pop();
+          if (newIds.length === 0) {
+            clearInterval(intervalId);
+          }
 
-        if (newIds.length === 0) {
-          clearInterval(intervalId);
-        }
-
-        return newIds;
-      });
-      console.log("stored ids : " , storedIds);
+          return newIds;
+        });
       }, 300)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleReverse()
   }, [storedIds])
 
-  console.log('stored ids outside : ', storedIds);
 
 
   const handleClick = (box: BOX) => {
-    if(storedIds.length === boxes.length) return
-    if(storedIds.includes(box.id)) return
+    if (storedIds.length === boxes.length) return
+    if (storedIds.includes(box.id)) return
     const id = box.id
-    setStoredIds(prev => (prev?[...prev, id] : [id]))
+    setStoredIds(prev => (prev ? [...prev, id] : [id]))
   }
 
   return (
